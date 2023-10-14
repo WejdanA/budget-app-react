@@ -1,4 +1,3 @@
-import { error } from "console";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -28,7 +27,6 @@ const Transfer = (props: {
   }, [totalIncome, totalExpense, totalSavings]);
 
   const transferedSubmitHandle: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     const transferedAmount = +data.amountRequired;
     getTransfered(transferedAmount);
   };
@@ -61,7 +59,5 @@ const Transfer = (props: {
     </section>
   );
 };
-
-// const total = (total: number, newValue: number) => {};
 
 export { Transfer };

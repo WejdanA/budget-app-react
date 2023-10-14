@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { List } from "./lists";
 
@@ -27,14 +27,11 @@ const FormContainer = (props: {
   } = useForm<Inputs>();
 
   let [data, setData] = useState([]);
-
-  console.log(formTitle);
   const submitData: SubmitHandler<Inputs> = (inputData) => {
     const inputs = inputData;
     const source = inputs.sourceRequired;
     const amount = inputs.amountRequired;
     const date = inputs.dateRequired;
-    console.log(inputData);
 
     data = [
       ...data,
@@ -58,10 +55,6 @@ const FormContainer = (props: {
       : getTotalIncome(-deletedAmount);
     console.error(data);
   };
-
-  // const setIncomeData = (incomeData, income) => {
-  //   incomeData = [...incomeData, income];
-  // };
 
   return (
     <section id={formTitle + "-container"} className="form-container">
