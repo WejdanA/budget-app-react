@@ -1,26 +1,25 @@
-import React from "react";
 import { useState } from "react";
-import logo from "./logo.svg";
+
 import "./App.css";
+
 import { FormContainer } from "./components/form";
 import { Target } from "./components/target";
 import { Transfer } from "./components/balance";
 
 function App() {
   let [totalSavings, setTotalSavings] = useState(0);
-  let [transferedAmount, setTranfered] = useState(0);
+  let [totalIncome, setTotalIncome] = useState(0);
+  let [totalExpense, setTotalExpense] = useState(0);
+
   let getTransfered = (transfered: number) => {
-    setTranfered(transfered);
     setTotalSavings((totalSavings += +transfered));
   };
 
-  let [totalIncome, setTotalIncome] = useState(0);
-  let getTotalIncome = (income: number) => {
+  let updateTotalIncome = (income: number) => {
     setTotalIncome((totalIncome += income));
   };
 
-  let [totalExpense, setTotalExpense] = useState(0);
-  let getTotalExpense = (expense: number) => {
+  let updateTotalExpense = (expense: number) => {
     setTotalExpense((totalExpense += expense));
   };
 
@@ -30,13 +29,13 @@ function App() {
       <main>
         <FormContainer
           formTitle={"Income"}
-          getTotalIncome={getTotalIncome}
-          getTotalExpense={getTotalExpense}
+          updateTotalIncome={updateTotalIncome}
+          updateTotalExpense={updateTotalExpense}
         />
         <FormContainer
           formTitle={"Expense"}
-          getTotalIncome={getTotalIncome}
-          getTotalExpense={getTotalExpense}
+          updateTotalIncome={updateTotalIncome}
+          updateTotalExpense={updateTotalExpense}
         />
 
         <Target totalSavings={totalSavings} />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -19,17 +19,15 @@ const Transfer = (props: {
     formState: { errors },
   } = useForm<Inputs>();
 
-  let totalBalance = totalIncome - totalExpense - totalSavings;
-  let [balance, setBalance] = useState(totalBalance);
-
-  useEffect(() => {
-    setBalance(totalIncome - totalExpense - totalSavings);
+  const balance = useMemo(() => {
+    return totalIncome - totalExpense - totalSavings;
   }, [totalIncome, totalExpense, totalSavings]);
 
   const transferedSubmitHandle: SubmitHandler<Inputs> = (data) => {
     const transferedAmount = +data.amountRequired;
     getTransfered(transferedAmount);
   };
+
   return (
     <section id="transfer-container">
       <p id="balance">Current Balance: {balance} </p>
@@ -44,7 +42,7 @@ const Transfer = (props: {
           id="transfer"
           {...register("amountRequired", {
             required: true,
-            max: totalBalance,
+            max: balance,
             min: 0,
           })}
         />

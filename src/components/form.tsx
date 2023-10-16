@@ -2,24 +2,20 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { List } from "./lists";
 
-type transaction = {
+import { v4 as uuidv4 } from "uuid";
+
+type Inputs = {
   source: string;
   amount: string;
   date: string;
 };
 
-type Inputs = {
-  sourceRequired: string;
-  amountRequired: string;
-  dateRequired: string;
-};
-
 const FormContainer = (props: {
   formTitle: string;
-  getTotalIncome: (income: number) => void;
-  getTotalExpense: (expense: number) => void;
+  updateTotalIncome: (income: number) => void;
+  updateTotalExpense: (expense: number) => void;
 }) => {
-  const { formTitle, getTotalIncome, getTotalExpense } = props;
+  const { formTitle, updateTotalIncome, updateTotalExpense } = props;
   const {
     register,
     handleSubmit,
@@ -28,32 +24,26 @@ const FormContainer = (props: {
 
   let [data, setData] = useState([]);
   const submitData: SubmitHandler<Inputs> = (inputData) => {
-    const inputs = inputData;
-    const source = inputs.sourceRequired;
-    const amount = inputs.amountRequired;
-    const date = inputs.dateRequired;
-
-    data = [
-      ...data,
-      {
-        source,
-        amount,
-        date,
-      },
-    ];
+    const amount = inputData.amount;
+    const newData = { ...inputData, id: uuidv4() };
+    data = [...data, newData];
     setData(data);
+
     formTitle === "Expense"
-      ? getTotalExpense(+amount)
-      : getTotalIncome(+amount);
+      ? updateTotalExpense(+amount)
+      : updateTotalIncome(+amount);
   };
 
   const deleteItem = (id: string) => {
-    const deletedAmount = data.splice(+id, 1)[0].amount;
-    setData([...data]);
-    formTitle === "Expense"
-      ? getTotalExpense(-deletedAmount)
-      : getTotalIncome(-deletedAmount);
-    console.error(data);
+    const deletedItem = data.find((transaction) => transaction.id == id);
+    if (deletedItem) {
+      const filterredData = data.filter((transaction) => transaction.id != id);
+      const deletedAmount = deletedItem.amount;
+      setData([...filterredData]);
+      formTitle === "Expense"
+        ? updateTotalExpense(-deletedAmount)
+        : updateTotalIncome(-deletedAmount);
+    }
   };
 
   return (
@@ -67,17 +57,17 @@ const FormContainer = (props: {
         <input
           type="text"
           id="source"
-          {...register("sourceRequired", { required: true })}
+          {...register("source", { required: true })}
         />
-        {errors.sourceRequired && <span>*The source can't be empty</span>}
+        {errors.source && <span>*The source can't be empty</span>}
 
         <label htmlFor="amount">{formTitle} amount</label>
         <input
           type="number"
           id="amount"
-          {...register("amountRequired", { required: true, min: 0 })}
+          {...register("amount", { required: true, min: 0 })}
         />
-        {errors.amountRequired && (
+        {errors.amount && (
           <span>
             *The amount can't be negetive <br /> *The amount can't be empty
           </span>
@@ -87,9 +77,9 @@ const FormContainer = (props: {
         <input
           type="date"
           id="date"
-          {...register("dateRequired", { required: true })}
+          {...register("date", { required: true })}
         />
-        {errors.dateRequired && <span>*The date can't be empty</span>}
+        {errors.date && <span>*The date can't be empty</span>}
         <input type="submit" value={"add " + formTitle} />
       </form>
 

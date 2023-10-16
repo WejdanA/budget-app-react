@@ -1,14 +1,15 @@
 import React from "react";
 import { MouseEvent } from "react";
 import { useState } from "react";
-type transaction = {
+type Transaction = {
   source: string;
   amount: string;
   date: string;
+  id: string;
 };
 
 export const List = (props: {
-  data: [transaction];
+  data: [Transaction];
   deleteItem: (id: string) => void;
 }) => {
   const { data, deleteItem } = props;
@@ -21,11 +22,11 @@ export const List = (props: {
   return (
     <ul id="list">
       {data.length ? (
-        data.map((tranaction: transaction, index: number) => (
-          <li key={index}>
+        data.map((tranaction: Transaction, index: number) => (
+          <li key={tranaction.id}>
             {tranaction.source}: {tranaction.amount}EUR on {tranaction.date}
             <button
-              id={index + ""}
+              id={tranaction.id}
               className="delete-btn"
               onClick={deleteHandle}
             >
