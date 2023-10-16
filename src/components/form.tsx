@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { List } from "./lists";
+import { List } from "./Lists";
 
 import { v4 as uuidv4 } from "uuid";
 

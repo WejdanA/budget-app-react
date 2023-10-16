@@ -1,6 +1,6 @@
 import React from "react";
 import { MouseEvent } from "react";
-import { useState } from "react";
+
 type Transaction = {
   source: string;
   amount: string;

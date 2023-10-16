@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import "./App.css";
 
-import { FormContainer } from "./components/form";
-import { Target } from "./components/target";
-import { Transfer } from "./components/balance";
+import { FormContainer } from "./components/Form";
+import { Target } from "./components/Target";
+import { Transfer } from "./components/Balance";
 
 function App() {
   let [totalSavings, setTotalSavings] = useState(0);
